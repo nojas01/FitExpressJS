@@ -5,6 +5,6 @@ const XmlStream = require('xml-stream');
 */
 const stream=fs.createReadStream('test.gpx');
 const xml = new XmlStream(stream);
-xml.on('endElement: trkpt', function(thing) {
-  console.log(thing);
+xml.on('endElement: trkpt', function(row) {
+  console.log(row);
 });
