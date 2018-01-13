@@ -1,27 +1,24 @@
-// const readline = require('readline')
-// const xpath = require('xpath')
-// const fs = require('fs')
-//
-// const rl = readline.createInterface({
-//   input: fs.createReadStream('./test.gpx'),
-//   crlfDelay: 100
-// })
-//
-// rl.on('line', (line) => {
-//   const filterword = /<name>*/;
-//   const x = line.match(filterword)
-//
-//   console.log(`Line from File: ${x}`)
-// })
-//
-
 const fs        = require('fs');
 const XmlStream = require('xml-stream');
-/*
-   * Pass the ReadStream object to xml-stream
-*/
+const models = require('./models')
+
+
 const stream=fs.createReadStream('test.gpx');
 const xml = new XmlStream(stream);
-xml.on('endElement: trkpt', function(thing) {
-  console.log(thing);
+// xml.preserve('extensions', true)
+// xml.collect('subitem')
+xml.on('endElement: trkpt', function(row) {
+  const newTraining = {}
+  newTraining.time = row.time
+  newTraining.latitude = row['$'].lat
+  newTraining.longitude = row['$'].lon
+  newTraining.cadance = row.extensions['ns3:TrackPointExtension']['ns3:cad']
+  newTraining.heartrate = row.extensions['ns3:TrackPointExtension']['ns3:hr']
+
+  console.log(newTraining);
+  models.training.create(newTraining)
+    .then((training) => {
+      res.json(training)
+    })
+    .catch((error) => console.log(error))
 });
