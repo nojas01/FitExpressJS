@@ -18,7 +18,7 @@ xml.on('endElement: trkpt', function(row) {
   console.log(newTraining);
   models.training.create(newTraining)
     .then((training) => {
-      res.json(training)
+      console.log(training)
     })
     .catch((error) => console.log(error))
 });

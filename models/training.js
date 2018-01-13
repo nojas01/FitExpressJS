@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var training = sequelize.define('training', {
-    time: DataTypes.TIME,
+    time: DataTypes.DATE,
     latitude: DataTypes.STRING,
     longitude: DataTypes.STRING,
     temperature: DataTypes.FLOAT,

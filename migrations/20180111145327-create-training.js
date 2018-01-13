@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       time: {
-        type: Sequelize.TIME
+        type: Sequelize.DATE
       },
       latitude: {
         type: Sequelize.STRING
