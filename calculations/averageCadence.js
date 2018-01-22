@@ -13,7 +13,7 @@ sequelize.query( "SELECT avg(cadance) FROM trainings", { type: Sequelize.QueryTy
 
 //
 // models.training.count()
-//   .then(count => {console.log(count)})
+//   .then(count => {console  .log(count)})
 //   .catch((error) => console.log(error))
 //
 // models.training.sum('cadance').then(sum => {
