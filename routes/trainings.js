@@ -19,18 +19,24 @@ router
       const stream = fs.createReadStream('./uploads/training.gpx')
       const xml = new XmlStream(stream)
 
-      xml.on('endElement: trkpt', function(row) {
-        const newTraining = {}
-        newTraining.time = row.time
-        newTraining.latitude = row['$'].lat
-        newTraining.longitude = row['$'].lon
-        newTraining.cadance = row.extensions['ns3:TrackPointExtension']['ns3:cad']
-        newTraining.heartrate = row.extensions['ns3:TrackPointExtension']['ns3:hr']
+      res.setHeader('Content-Type', 'application/json')
 
-        sequelize.transactions
-        models.training.create(newTraining)
-          .then((training) => { res.json(training) })
-          .catch((error) => next(error))
+      xml.on('endElement: trkpt', function(row) {
+        const newTraining = {
+          time: row.time,
+          latitude: row['$'].lat,
+          longitude: row['$'].lon,
+          cadance: row.extensions['ns3:TrackPointExtension']['ns3:cad'],
+          heartrate: row.extensions['ns3:TrackPointExtension']['ns3:hr']
+        }
+
+      models.training.create(newTraining)
+      // .then((training) => { res.write(training) })
+      // .catch((error) => next(error))
+
+      })
+      xml.on('end', function() {
+        res.end();
       })
 
       fs.unlink('./uploads/training.gpx',(err) => {
